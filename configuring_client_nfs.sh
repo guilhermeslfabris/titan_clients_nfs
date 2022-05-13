@@ -130,20 +130,3 @@ echo "Fazendo link entre a /usr/local/chem/ e /usr/local/cluster"
 ln -s /usr/local/chem/ /usr/local/cluster
    
 banner "Configuração inicial finalizada!"
-
-
-
-#banner "Instalando os pacotes principais"
-
-
-#systemctl enable ypbind.service
-#systemctl start ypbind.service
-
-#cp -v /etc/hosts /tmp
-#cp -v /etc/passwd /tmp
-#sleep 4
-
-#banner "Downloading article"
-#curl https://www.shellscript.sh/tips/banner/ > /tmp/banner.html
-#sleep 5
-
