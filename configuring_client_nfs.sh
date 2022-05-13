@@ -32,10 +32,12 @@ echo "Verificando conexão com a internet..."
 echo 
 
 check_connectivity
+sleep 5
 
 echo
 echo "Verificando as permissões necessárias..."
 echo
+sleep 5
 
 if [ "$EUID" -ne 0 ]
   then echo "Por favor, execute este script como root"
@@ -53,7 +55,7 @@ sleep 3
 
 echo 
 echo "Instalando as principais bibliotecas"
-sleep 2
+sleep 5
 apt-get -y install make vim gfortran cpp g++ gcc hwloc libc6 network-manager
 apt-get -y install libblas3 libblas-dev liblapack3 liblapack-dev libfftw3-bin libfftw3-dev
 apt-get -y install tk libglu1-mesa libtogl2 libfftw3-3 libxmu6 imagemagick openbabel libgfortran5
@@ -61,7 +63,7 @@ echo
 echo
 
 echo "Instalando os pacotes NFS e NIS cliente"
-sleep 2
+sleep 5
 apt-get -y install nfs-common nis
 
 
@@ -70,18 +72,20 @@ echo "Configurando acesso SSH direto do ROOT"
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup1
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo
+sleep 5
 
 echo "Adicionando o IP do Server Titan"
 echo "192.168.0.10   titan.lsm.cluster   titan" >> /etc/hosts
 echo
+sleep 5
 
 echo "Configurando o FSTAB"
-sleep 2
 echo " "
 echo "titan:/home /home nfs rw,sync 0 0" >> /etc/fstab
 echo "titan:/usr/local/chem /usr/local/chem nfs defaults 0 0" >> /etc/fstab
 echo "titan:/usr/local/bin /usr/local/bin nfs defaults 0 0" >> /etc/fstab
 echo
+sleep 5
 
 echo "Criando pasta /usr/local/chem"
 mkdir -p /usr/local/chem
@@ -89,15 +93,18 @@ echo
 
 echo "Montando as partições do servidor na $(hostname)"
 mount -a
-sleep 3
+sleep 5
 
 echo "Configurando NIS server"
 echo "ypserver titan.lsm.cluster" >> /etc/yp.conf
 echo
+echo "lsm.cluster" >> /etc/defaultdomain
+echo
+sleep 5
 
 echo
 echo "Configurando o Network Services Switch manualmente:"
-echo "           *Adicionar a keyword nis nas opções: passwd, group, shadow, hosts e netgroup*"
+echo "           *Adicionar a keyword nis no final das opções: passwd, group, shadow, hosts e netgroup*"
 sleep 10
 vi /etc/nsswitch.conf
 echo
@@ -109,6 +116,7 @@ echo
 echo "Reiniciando o servidor ssh..."
 /etc/init.d/ssh restart
 echo
+sleep 3
 
 #vi /etc/profile
 
@@ -116,11 +124,13 @@ echo "Criando o diretório /work no diretório raiz..."
 cd /
 mkdir work
 chmod 777 /work && chmod +t /work/
+sleep 5
 
 echo "Reiniciando o servidor NIS..."
 systemctl restart rpcbind nscd ypbind
 systemctl enable rpcbind ypbind
 echo
+sleep 5
 
 echo "Montando as partições NFS do servidor..."
 mount -a
